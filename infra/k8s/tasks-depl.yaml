@@ -23,6 +23,11 @@ spec:
                   secretKeyRef:
                     name: postgres
                     key: password
+            - name: JWT_SECRET
+              valueFrom:
+                  secretKeyRef:
+                    name: jwt
+                    key: secret
 ---
 apiVersion: v1
 kind: Service
