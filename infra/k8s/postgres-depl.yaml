@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tasks-postgres
+  template:
+    metadata:
+      labels:
+        app: tasks-postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:13-alpine
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                  secretKeyRef:
+                    name: postgres
+                    key: password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tasks-postgres-srv
+spec:
+  selector:
+    app: tasks-postgres
+  ports:
+    - name: postgres
+      protocol: TCP
+      port: 5432
+      targetPort: 5432
